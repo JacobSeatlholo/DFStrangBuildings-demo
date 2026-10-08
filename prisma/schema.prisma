@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Joint-Venture / Co-Development land & asset submissions (Deal Sourcing)
+model JVLead {
+  id            String   @id @default(cuid())
+  fullName      String
+  email         String
+  phone         String
+  location      String
+  plotSize      Float
+  sizeUnit      String   // "sqm" | "hectares"
+  zoningType    String   // Residential | Commercial | Industrial | Mixed-Use
+  ownershipType String   // Freehold | Sectional Title | Leasehold | Trust | Other
+  gdvEstimate   Float?   // computed GDV at submission time
+  notes         String?
+  createdAt     DateTime @default(now())
+}
+
+// Estate Care & Facilities Management retainer quote requests
+model RetainerLead {
+  id             String   @id @default(cuid())
+  fullName       String
+  company        String?
+  email          String
+  phone          String
+  propertyType   String   // Estate | Commercial | Industrial
+  serviceTier    String   // Estate Care Essential | Estate Care Retainer | Commercial FM | Custom
+  propertySize   Float?
+  frequency      String?  // Monthly | Quarterly | Annual
+  notes          String?
+  createdAt      DateTime @default(now())
+}
+
+// Feasibility & budget calculator report downloads (High-Intent Lead Capture)
+model FeasibilityLead {
+  id               String   @id @default(cuid())
+  fullName         String
+  email            String
+  phone            String
+  developmentType  String   // Bespoke Residential | Commercial Office Park | Industrial | Renovation
+  footprintSqm     Float
+  qualityTier      String   // Standard | Ultra-Luxury
+  addOns           String   // JSON array: solar, rainwater, automation
+  estCostLow       Float
+  estCostHigh      Float
+  estTimelineWeeks Int
+  createdAt        DateTime @default(now())
+}
